@@ -11,25 +11,3 @@ df.replace(r'\s+', '', regex=True, inplace=True)  # 去除所有空格
 null_in_car_suv = ['02********','03********','07********','08********']                                                                                                                                       
 df['Car/Suv'] = df['Car/Suv'].replace(null_in_car_suv, '')
 
-df.to_csv('newdata.csv')
-   
-
-# def fillna_mode(series):
-#     mode_value = series.mode().iloc[0]  # 众数
-#     return series.fillna(mode_value)
-
-# df['Car/Suv'] = df.groupby('Model')['Car/Suv'].transform(fillna_mode)
-
-# import pandas as pd
-
-
-
-# df = pd.read_csv('newdata.csv')
-
-# # 将 "item" 列中值为1的项替换为空白
-
-# null_a = (1,2)
-# df['item'] = df['item'].replace(null_a, '')
-
-# # 显示结果
-# print(df)
