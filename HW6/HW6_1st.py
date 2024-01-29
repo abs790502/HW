@@ -5,7 +5,7 @@ df = pd.read_csv('vechicle.csv')
 
 
 df['Price'] = pd.to_numeric(df['Price'], errors= 'coerce') #to_numeric 把price 欄位轉成數字，errors= 'coerce' 表示無法轉成數字顯示NaN
-# filter_df['Price'] = filter_df['Price'].astype(int)     <----#轉換數字會直接失敗，因為Price欄位有POA字串，新增第五行把price 進行清洗        
+# filter_df['Price'] = filter_df['Price'].astype(int)     <----#轉換數字會直接失敗，因為Price欄位有POA字串，新增第7行把price 進行清洗        
 df.dropna(inplace= True) #清洗
 
 
