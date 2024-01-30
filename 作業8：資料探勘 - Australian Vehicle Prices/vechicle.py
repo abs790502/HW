@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 df = pd.read_csv('Australian Vehicle Prices.csv')
 # df.info()   最多有16733 比樣本
