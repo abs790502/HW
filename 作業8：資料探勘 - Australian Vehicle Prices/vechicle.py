@@ -14,3 +14,6 @@ df['Price'] = pd.to_numeric(df['Price'], errors='coerce') #price 欄位中有'PO
 df.dropna(inplace=True)
 # df.info()   還有16389 比樣本 比原始資料少2% ，故將以此整理後資料進行數據分析
 
+brand_count= df['Brand'].value_counts() #各品牌的銷售數量
+total_brand= df['Brand'].nunique() #共有多少品牌
+top_ten = brand_count.head(10) #前10大銷售量品牌與銷售數
