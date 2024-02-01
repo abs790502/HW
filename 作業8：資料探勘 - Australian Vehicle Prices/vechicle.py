@@ -18,27 +18,31 @@ df.dropna(inplace=True)
 
 brand_count= df['Brand'].value_counts() #各品牌的銷售數量
 total_brand= df['Brand'].nunique() #共有多少品牌
-year_count= df['Year'].value_counts()
-top_ten = brand_count.head(10) #前10大銷售量品牌與銷售數
-# print(type(top_ten)) # 這是一個數列要先轉換成dataFrame
+year_count= df['Year'].value_counts() #各年份銷售量
+
 df_year_count = year_count.reset_index()
 df_year_count.columns = ['Year','Count']
 
 
-df_top_ten = top_ten.reset_index()
-df_top_ten.columns= ['Brand','Count'] #轉換成新的dataframe['Brand' & 'Count']
+
+top_ten = brand_count.head(10).reset_index() #前10大銷售量品牌與銷售數,存成新的dataframe
+top_ten.columns= ['Brand','Count'] #轉換成新的dataframe['Brand' & 'Count']
+
+filter_year = df[df['Year'] >2009]#把年份縮短到近20年
+fueltype_year = filter_year['FuelType'].value_counts() # 發現一個Fueltype為'-'
+df_fueltype_year = filter_year[filter_year['FuelType'] != '-']  # 先將'-'移除
 
 
-plt.subplot(1,2,1)
+plt.subplot(1,3,1) # 用top_ten作圖
 
-sns.barplot(x='Brand', y='Count', data=df_top_ten, palette='viridis')
+sns.barplot(x='Brand', y='Count', data=top_ten, palette='viridis')
 plt.xlabel('Brand')
 plt.ylabel('Count')
 plt.title('Brand Counts')
 plt.xticks(rotation=45, ha='right')  
 
 
-plt.subplot(1,2,2)
+plt.subplot(1,3,2) #用汽車總銷量作圖
 
 plt.tight_layout()
 sns.scatterplot(x='Year', y='Count', data=df_year_count, size='Year', hue='Year', sizes=(10, 50), palette='viridis')
@@ -46,4 +50,16 @@ plt.title('Car Sales by Year')
 plt.xlabel('Year')
 plt.ylabel('Count')
 plt.tight_layout()
+
+
+
+plt.subplot(1,3,3) #各年的燃油類型銷售
+
+sns.countplot(x='Year', hue='FuelType', data=df_fueltype_year, palette='Set2', width=1)
+plt.tight_layout()
+plt.title('Fuel Type Distribution Over Years')
+plt.xlabel('Year')
+plt.ylabel('Count')
+plt.xticks(rotation=45, ha='right')
 plt.show()
+
