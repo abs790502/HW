@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 df = pd.read_csv('Australian Vehicle Prices.csv')
 # df.info()   最多有16733 比樣本
@@ -28,9 +29,43 @@ df_year_count.columns = ['Year','Count']
 top_ten = brand_count.head(10).reset_index() #前10大銷售量品牌與銷售數,存成新的dataframe
 top_ten.columns= ['Brand','Count'] #轉換成新的dataframe['Brand' & 'Count']
 
-filter_year = df[df['Year'] >2009]#把年份縮短到近20年
-fueltype_year = filter_year['FuelType'].value_counts() # 發現一個Fueltype為'-'
-df_fueltype_year = filter_year[filter_year['FuelType'] != '-']  # 先將'-'移除
+filter_year_20 = df[df['Year'] >2009]#把年份縮短到近20年
+fueltype_year_20 = filter_year_20['FuelType'].value_counts() # 發現一個Fueltype為'-'
+df_fueltype_year_20 = filter_year_20[filter_year_20['FuelType'] != '-']  # 先將'-'移除
+
+#近10年總銷售額最高的前5大車廠的FuelType分類
+df_filter_year_ten = df[df['Year'] >2002] #近10年
+
+df_filter_year_ten['FuelType'] = np.where(df_filter_year_ten['FuelType'].isin(['Hybrid', 'Unleaded','Electric']), df_filter_year_ten['FuelType'], 'Other')#fueltype分類
+df_fueltype_filter = df_filter_year_ten.query("FuelType != 'Other'") #other太多了，只看油電，無鉛，純電
+
+top_10_sales = df_filter_year_ten.groupby('Brand')['Price'].sum().nlargest(5).index #看前10大銷售品牌的
+df_top_10_year_sales = df_fueltype_filter[df_fueltype_filter['Brand'].isin(top_10_sales)]
+
+
+#散點圖
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Year', y='Price', hue='FuelType', style='Brand', data=df_top_10_year_sales, s=100)
+
+plt.title('Relation with Brand_FuelType & Price with Year')
+plt.xlabel('Year')
+plt.ylabel('Price')
+plt.xticks(rotation=45, ha='right')
+plt.legend(title='FuelType')
+
+
+
+#箱型圖
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(x='Brand', y='Price', hue='FuelType', data=df_top_10_year_sales)
+plt.title('Brand & Fueltype price')
+plt.xlabel('Brand')
+plt.ylabel('Price')
+plt.legend(title='FuelType', loc='upper right')
+plt.show()
+
 
 
 plt.subplot(1,3,1) # 用top_ten作圖
@@ -55,7 +90,7 @@ plt.tight_layout()
 
 plt.subplot(1,3,3) #各年的燃油類型銷售
 
-sns.countplot(x='Year', hue='FuelType', data=df_fueltype_year, palette='Set2', width=1)
+sns.countplot(x='Year', hue='FuelType', data=df_fueltype_year_20, palette='Set2', width=1)
 plt.tight_layout()
 plt.title('Fuel Type Distribution Over Years')
 plt.xlabel('Year')
