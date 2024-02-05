@@ -14,7 +14,9 @@ df['Location'].fillna('virtual', inplace=True)
 df['Doors'].fillna('virtual', inplace=True)
 df['Seats'].fillna('virtual', inplace=True)
 df['Price'] = pd.to_numeric(df['Price'], errors='coerce') #price 欄位中有'POA' 故先把無效資訊轉成空值
+df['Year'] = df['Year'].fillna(0).astype(int)
 df.dropna(inplace=True)
+print(df)
 # df.info()   還有16389 比樣本 比原始資料少2% ，故將以此整理後資料進行數據分析
 
 brand_count= df['Brand'].value_counts() #各品牌的銷售數量
@@ -35,66 +37,62 @@ df_fueltype_year_20 = filter_year_20[filter_year_20['FuelType'] != '-']  # 先�
 
 #近10年總銷售額最高的前5大車廠的FuelType分類
 df_filter_year_ten = df[df['Year'] >2002] #近10年
-
 df_filter_year_ten['FuelType'] = np.where(df_filter_year_ten['FuelType'].isin(['Hybrid', 'Unleaded','Electric']), df_filter_year_ten['FuelType'], 'Other')#fueltype分類
 df_fueltype_filter = df_filter_year_ten.query("FuelType != 'Other'") #other太多了，只看油電，無鉛，純電
-
 top_10_sales = df_filter_year_ten.groupby('Brand')['Price'].sum().nlargest(5).index #看前10大銷售品牌的
 df_top_10_year_sales = df_fueltype_filter[df_fueltype_filter['Brand'].isin(top_10_sales)]
 
 
-#散點圖
 
-plt.figure(figsize=(10, 6))
-sns.scatterplot(x='Year', y='Price', hue='FuelType', style='Brand', data=df_top_10_year_sales, s=100)
 
+sns.scatterplot(x='Year', y='Price', hue='FuelType', style='Brand', data=df_top_10_year_sales, s=100) #散點除
 plt.title('Relation with Brand_FuelType & Price with Year')
 plt.xlabel('Year')
 plt.ylabel('Price')
 plt.xticks(rotation=45, ha='right')
 plt.legend(title='FuelType')
-
-
-
-#箱型圖
-
-plt.figure(figsize=(12, 8))
-sns.boxplot(x='Brand', y='Price', hue='FuelType', data=df_top_10_year_sales)
-plt.title('Brand & Fueltype price')
-plt.xlabel('Brand')
-plt.ylabel('Price')
-plt.legend(title='FuelType', loc='upper right')
+plt.tight_layout()
 plt.show()
 
 
 
-plt.subplot(1,3,1) # 用top_ten作圖
+sns.boxplot(x='Brand', y='Price', hue='FuelType', data=df_top_10_year_sales) #合鬚圖
+plt.title('Brand & Fueltype price')
+plt.xlabel('Brand')
+plt.ylabel('Price')
+plt.legend(title='FuelType', loc='upper right')
+plt.tight_layout()
+plt.show()
 
-sns.barplot(x='Brand', y='Count', data=top_ten, palette='viridis')
+
+
+sns.barplot(x='Brand', y='Count', data=top_ten, palette='viridis') #長條圖
 plt.xlabel('Brand')
 plt.ylabel('Count')
 plt.title('Brand Counts')
 plt.xticks(rotation=45, ha='right')  
-
-
-plt.subplot(1,3,2) #用汽車總銷量作圖
-
 plt.tight_layout()
+plt.show()
+
+
+
 sns.scatterplot(x='Year', y='Count', data=df_year_count, size='Year', hue='Year', sizes=(10, 50), palette='viridis')
 plt.title('Car Sales by Year')
 plt.xlabel('Year')
 plt.ylabel('Count')
 plt.tight_layout()
+plt.show()
 
 
 
-plt.subplot(1,3,3) #各年的燃油類型銷售
 
-sns.countplot(x='Year', hue='FuelType', data=df_fueltype_year_20, palette='Set2', width=1)
+sns.countplot(x='Year', hue='FuelType', data=df_fueltype_year_20, palette='Set2', width=1) #計數長條圖
 plt.tight_layout()
 plt.title('Fuel Type Distribution Over Years')
 plt.xlabel('Year')
 plt.ylabel('Count')
 plt.xticks(rotation=45, ha='right')
 plt.show()
+
+
 
