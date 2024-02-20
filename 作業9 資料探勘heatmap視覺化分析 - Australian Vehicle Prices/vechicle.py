@@ -46,15 +46,14 @@ df_top_10_year_sales = df_fueltype_filter[df_fueltype_filter['Brand'].isin(top_1
 df_for_heatmap = df.loc[:, ['Brand', 'Year', 'Car/Suv', 'Transmission', 'FuelType', 'BodyType', 'Price']]
 
 
-df_for_heatmap['Brand'] = lb.fit_transform(df_for_heatmap['Brand'])
-df_for_heatmap['Car/Suv'] = lb.fit_transform(df_for_heatmap['Car/Suv'])
-df_for_heatmap['Transmission'] = lb.fit_transform(df_for_heatmap['Transmission'])
-df_for_heatmap['FuelType'] = lb.fit_transform(df_for_heatmap['FuelType'])
-df_for_heatmap['BodyType'] = lb.fit_transform(df_for_heatmap['BodyType'])
+df_for_heatmap['Brand'] = lb.fit_transform(df_for_heatmap['Brand'])   #用labelEncoder 將字串轉換成數字
+df_for_heatmap['Car/Suv'] = lb.fit_transform(df_for_heatmap['Car/Suv']) #用labelEncoder 將字串轉換成數字
+df_for_heatmap['Transmission'] = lb.fit_transform(df_for_heatmap['Transmission']) #用labelEncoder 將字串轉換成數字
+df_for_heatmap['FuelType'] = lb.fit_transform(df_for_heatmap['FuelType']) #用labelEncoder 將字串轉換成數字
+df_for_heatmap['BodyType'] = lb.fit_transform(df_for_heatmap['BodyType']) #用labelEncoder 將字串轉換成數字
 
-print(df_for_heatmap.head())
 
-corr_matrix=df_for_heatmap.corr()
+corr_matrix=df_for_heatmap.corr()  #相關係數
 plt.figure(1, figsize=(14,8))
 sns.heatmap(corr_matrix,center=0, annot=True)
 plt.show()
