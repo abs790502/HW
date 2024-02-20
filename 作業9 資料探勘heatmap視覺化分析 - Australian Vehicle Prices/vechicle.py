@@ -54,7 +54,6 @@ df_for_heatmap['BodyType'] = lb.fit_transform(df_for_heatmap['BodyType']) #用la
 
 
 corr_matrix=df_for_heatmap.corr()  #相關係數
-plt.figure(1, figsize=(14,8))
 sns.heatmap(corr_matrix,center=0, annot=True)
 plt.show()
 
