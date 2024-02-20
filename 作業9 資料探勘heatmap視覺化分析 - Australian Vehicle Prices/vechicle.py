@@ -45,12 +45,12 @@ df_top_10_year_sales = df_fueltype_filter[df_fueltype_filter['Brand'].isin(top_1
 #保留近10年的Brand,Year,Car/Suv,Transmission,FuelType,BodyType,Price 做heatmap
 df_for_heatmap = df.loc[:, ['Brand', 'Year', 'Car/Suv', 'Transmission', 'FuelType', 'BodyType', 'Price']]
 
-
-df_for_heatmap['Brand'] = lb.fit_transform(df_for_heatmap['Brand'])   #用labelEncoder 將字串轉換成數字
-df_for_heatmap['Car/Suv'] = lb.fit_transform(df_for_heatmap['Car/Suv']) #用labelEncoder 將字串轉換成數字
-df_for_heatmap['Transmission'] = lb.fit_transform(df_for_heatmap['Transmission']) #用labelEncoder 將字串轉換成數字
-df_for_heatmap['FuelType'] = lb.fit_transform(df_for_heatmap['FuelType']) #用labelEncoder 將字串轉換成數字
-df_for_heatmap['BodyType'] = lb.fit_transform(df_for_heatmap['BodyType']) #用labelEncoder 將字串轉換成數字
+#用labelEncoder 將字串轉換成數字
+df_for_heatmap['Brand'] = lb.fit_transform(df_for_heatmap['Brand'])   
+df_for_heatmap['Car/Suv'] = lb.fit_transform(df_for_heatmap['Car/Suv']) 
+df_for_heatmap['Transmission'] = lb.fit_transform(df_for_heatmap['Transmission'])
+df_for_heatmap['FuelType'] = lb.fit_transform(df_for_heatmap['FuelType']) 
+df_for_heatmap['BodyType'] = lb.fit_transform(df_for_heatmap['BodyType']) 
 
 
 corr_matrix=df_for_heatmap.corr()  #相關係數
