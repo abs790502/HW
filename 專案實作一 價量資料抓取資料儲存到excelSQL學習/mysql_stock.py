@@ -28,7 +28,8 @@ cursor = db.cursor()
 cursor.execute("SELECT VERSION()")
 data = cursor.fetchone()
 print ("Database version : " + str(data))
-db.close()
+
+#db.close()
 
 # 顯示DATABASE內容，並創建
 cursor.execute("CREATE DATABASE stock")
